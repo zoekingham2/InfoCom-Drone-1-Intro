@@ -10,27 +10,32 @@ def get_direction():
     d_la = 0
     send_vel = False
 
-    # Wait for a joystick event
-    for event in sense.stick.get_events():
-        if event.action == "pressed":
-            if event.direction == "left":
-                d_long = -1
-                d_la = 0
-                send_vel = True
-            elif event.direction == "right":
-                d_long = 1
-                d_la = 0
-                send_vel = True
-            elif event.direction == "up":
-                d_long = 0
-                d_la = 1
-                send_vel = True
-            elif event.direction == "down":
-                d_long = 0
-                d_la = -1
-                send_vel = True
+    event = None
+    while event is None:
+        events = sense.stick.get_events()
+        if events:
+            event = events[0]
+
+    if event.action in ["pressed", "held"]:
+        if event.direction == "left":
+            d_long = -1
+            d_la = 0
+            send_vel = True
+        elif event.direction == "right":
+            d_long = 1
+            d_la = 0
+            send_vel = True
+        elif event.direction == "up":
+            d_long = 0
+            d_la = 1
+            send_vel = True
+        elif event.direction == "down":
+            d_long = 0
+            d_la = -1
+            send_vel = True
 
     return d_long, d_la, send_vel
+
 
 
 if __name__ == "__main__":
